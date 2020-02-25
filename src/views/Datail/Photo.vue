@@ -7,7 +7,6 @@
         <img :src="data" />
       </li>
     </ul>
-
   </div>
 </template>
 <script>
