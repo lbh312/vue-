@@ -1,12 +1,26 @@
 <template>
-    <div>
+  <div>
     <ul>
       <li v-for="data in datalist" :key="data.filmId" @click="handleClick(data.filmId)">
         <img :src="data.poster"/>
         <h4>{{data.name}}</h4>
         <p>观众评分:{{data.grade}}</p>
-        <p>主演：{{data.actors}}</p>
+        <p class="actor">主演：{{data.actors | actorFilter}}</p>
       </li>
+    </ul>
+    <ul>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
+      <li>1111</li>
     </ul>
   </div>
 </template>
@@ -34,7 +48,7 @@ export default {
   methods: {
     handleClick (id) {
       // 作业 自己创建datail组件，配置好动态路由，跳转页面
-      this.$router.push(`/detail/${id}`) // push切换页面，this.$router这是固定的
+      this.$router.push(`/datail/${id}`) // push切换页面，this.$router这是固定的
     }
   }
 }
@@ -47,10 +61,10 @@ li{
     float: left;
     width: 100px;
   }
-  // .actor{
-  //   text-overflow: ellipsis;
-  //   white-space: nowrap;
-  //   overflow: hidden;
-  // }
+  .actor{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 </style>

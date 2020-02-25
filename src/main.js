@@ -2,10 +2,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'// 导入./router/index.js 路由
-// import '@util/filter' // 引入过滤器，立马生效
-// import '@util/directive' // 引入指令，立马生效
-// import '@util/component' // 全局组件
 // import store from './store'
+import '@/util/filter' // 引入过滤器，立马生效
+import '@/util/directive' // 引入指令，立马生效
+import '@/util/component' // 全局组件
 
 Vue.config.productionTip = false
 
