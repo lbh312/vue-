@@ -1,32 +1,27 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div>
+    <tabbar></tabbar>
+    <!-- 路由容器(基于slot封装),这是固定写法,引入views文件夹下的组件，可以跳转页面-->
+    <router-view></router-view>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import tabbar from '@/components/Tabbar'// 只要是公用的就放在components静态文件中，这个不要联想到路由，他不是路由
+export default {
+  components: {
+    tabbar
   }
 }
+</script>
+
+<style lang="scss">
+//  切记默认样式都放在app.vue中
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  ul{
+    list-style: none;
+  }
 </style>
