@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-import http from '@/util/http'
+
 export default {
   data () {
     return {
@@ -42,15 +42,13 @@ export default {
     }
   },
   mounted () {
-    http.request({
-      url: '/gateway?cityId=310100&ticketFlag=1&k=1358720',
-      headers: {
-        'X-Host': 'mall.film-ticket.cinema.list'
-      }
-    }).then(res => {
-      console.log(res.data)
-      this.datalist = res.data.data.cinemas
-    })
+    // 异步vuex
+    // dispatch提交vuex中action，第一步
+    if (this.$store.state.cinemaList.length === 0) {
+      this.$store.dispatch('getCinemaAction')
+    } else {
+      console.log('使用缓存')
+    }
   },
   methods: {
     handleArea (data) {
@@ -66,7 +64,7 @@ export default {
     // 所有区的计算属性
     arealist () {
       /* 把对象映射成里面的某个数据属性,用map方法 */
-      var newarr = this.datalist.map(item => item.districtName)
+      var newarr = this.$store.state.cinemaList.map(item => item.districtName)
       //  console.log(newarr)
 
       /* 利用set结构进行数组去重，Array.from把类数组架构转换成数据结构
@@ -80,10 +78,10 @@ export default {
     // 根据选择的不同区域，过滤出相应区域的影院
     computedDatalist () {
       // 解决“全城”刚开始不显示
-      if (this.current === '全城') { return this.datalist }
+      if (this.current === '全城') { return this.$store.state.cinemaList }
 
       // 把整个原始数组过滤出来数据之后，必须保证是某个特定的区
-      return this.datalist.filter(item => item.districtName === this.current)
+      return this.$store.state.cinemaList.filter(item => item.districtName === this.current)
     }
   }
 }

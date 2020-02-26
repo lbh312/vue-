@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tabbar></tabbar>
+    <tabbar v-show="this.$store.state.isTabbarShow"></tabbar>
 
     <!-- 关键帧动画 -->
     <transition name="app" mode="out-in">
@@ -16,6 +16,9 @@
 <script>
 import tabbar from '@/components/Tabbar' // 只要是公用的就放在components静态文件中，这个不要联想到路由，他不是路由
 export default {
+  mounted () {
+    console.log(this.$store.state.isTabbarShow) // this.$store等价于store文件夹里的index.js
+  },
   components: {
     tabbar
   }
