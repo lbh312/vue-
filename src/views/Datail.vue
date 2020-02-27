@@ -33,12 +33,13 @@
       spaceBetween: 10,
       freeMode: true
     }" kerwinclass="photo">
-      <div class="swiper-slide" v-for="data in filminfo.photos" :key="data">
+      <div class="swiper-slide" v-for="(data,index) in filminfo.photos" :key="data"
+      @click="handlePreview(index)">
         <img :src="data"/>
       </div>
     </swiper>
 
-    <photo v-show="isPhotoShow" :list="filminfo.photos">
+    <photo v-show="isPhotoShow" :list="filminfo.photos" @event="handlePreview($event)">
       <m-title @back="handlePhotoShow">
         剧照 ( {{filminfo.photos.length}} )
       </m-title>
@@ -47,9 +48,13 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
+import { ImagePreview, Dialog } from 'vant'
+
 import http from '@/util/http'
 import swiper from '@/components/Swiper'
 import photo from './Datail/Photo'
+Vue.use(ImagePreview).use(Dialog)
 
 export default {
   // filters:{
@@ -74,7 +79,31 @@ export default {
     },
     handlePhotoShow () {
       this.isPhotoShow = false
+    },
+    handlePreview (index) {
+      ImagePreview({
+        images: this.filminfo.photos,
+        startPosition: index,
+        closeable: true,
+        closeIconPosition: 'top-left',
+        onClose () {
+          // do something
+        }
+      })
     }
+  },
+  beforeMount () {
+    Dialog.confirm({
+      title: '该影片没有排期',
+      message: '弹窗内容',
+      confirmButtonText: '同意',
+      cancelButtonText: '拒绝'
+    }).then(() => {
+      // on confirm
+      this.$router.back()
+    }).catch(() => {
+      // on cancel
+    })
   },
   mounted () {
     // this.$router  整个路由的大对象

@@ -1,8 +1,15 @@
 <template>
   <div>
     <div class="query">
-      <input type="text" v-model="mytext" />
-      <button @click="handleChangepage">取消</button>
+      <!-- <input type="text" v-model="mytext" />
+      <button @click="handleChangepage">取消</button> -->
+
+      <van-search
+    v-model="mytext"
+    show-action
+    placeholder="请输入搜索关键词"
+    @cancel="onCancel"
+  />
 
       <div v-show="mytext">
         <ul v-if="searchDatalist.length">
@@ -12,22 +19,31 @@
       </div>
     </div>
 
-    <div class="distance" v-show="!mytext">
+    <!-- <div class="distance" v-show="!mytext">
       <ul>
-        <!-- $store.getters.topDataList == topDataList -->
+        $store.getters.topDataList == topDataList
         <li v-for="(data,index) in topDataList" :key="index">{{data.name}}</li>
       </ul>
-    </div>
+    </div> -->
 
+      <van-list  v-show="!mytext">
+         <van-cell v-for="(data,index) in topDataList" :key="index" :title="data.name" />
+      </van-list>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import { Search, List, Cell } from 'vant'
+
 // 引入创建好的CinemaItem子组件
 import cinemaItem from './Cinema/CinemaItem'
 
-// mapState,mapGetters是vuex提供的一种切割函数，可以把你自己想要的状态直接拿出来，不用点点点
-import { mapState, mapGetters } from 'vuex' // 第一步引入
+// mapState,mapGetters，mapMutations是vuex提供的一种切割函数，可以把你自己想要的状态直接拿出来，不用点点点
+// mapMutations为commit提供的，写在方法中或者计算属性中，是根据后面传的是方法还是属性决定
+// mapActions为dispatch提供的
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+Vue.use(Search).use(List).use(Cell) // 第一步引入
 
 export default {
   data () {
@@ -39,24 +55,30 @@ export default {
     cinemaItem
   },
   methods: {
-    handleChangepage () {
+    onCancel () {
       // 返回到上一个页面
       this.$router.back()
-    }
+    },
+    // this.$store.commit('tabbar/hide') == ...mapMutations("tabbar",["hide","show"])
+    ...mapMutations('tabbar', ['hide', 'show']),
+    //  this.$store.dispatch('cinema/getCinemaAction') == ...mapActions("tabbar",["getCinemaAction"])
+    ...mapActions('cinema', ['getCinemaAction'])
   },
   mounted () {
     // 进来就消失
-    console.log(this.$store.state.cinemaList)
+    // console.log(this.$store.state.cinemaList)
     // this.$store.state.isTabbarShow = false
 
     // 同步状态，利用commit方法提交到mutations中
-    // 只有有$store，都要开启命名空间使用
-    this.$store.commit('tabbar/hide')
+    // 只有有$store，都要开启命名空间使用,这个要在方法中使用，不能用在计算属性中
+    // this.$store.commit('tabbar/hide')
+    this.hide()
 
     // 异步请求
     if (this.cinemaList.length === 0) {
       // 只有有$store，都要开启命名空间使用
-      this.$store.dispatch('cinema/getCinemaAction')
+      // this.$store.dispatch('cinema/getCinemaAction')
+      this.getCinemaAction()
     } else {
       console.log('search', '使用缓存')
     }
@@ -88,7 +110,8 @@ export default {
     // console.log(destroyed)
     // this.$store.state.isTabbarShow = true
     // 只有有$store，都要开启命名空间使用
-    this.$store.commit('tabber/show')
+    // this.$store.commit('tabbar/show')
+    this.show()
   }
 }
 </script>

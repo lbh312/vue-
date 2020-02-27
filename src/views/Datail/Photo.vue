@@ -3,7 +3,7 @@
     <slot></slot>
 
     <ul>
-      <li v-for="data in list" :key="data">
+      <li v-for="(data,index) in list" :key="data"  @click="handleClick(index)">
         <img :src="data"/>
       </li>
     </ul>
@@ -11,7 +11,13 @@
 </template>
 <script>
 export default {
-  props: ['list']
+  props: ['list'],
+  methods: {
+    handleClick (index) {
+      // 子传父
+      this.$emit('event', index)
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

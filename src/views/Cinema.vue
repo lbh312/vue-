@@ -30,11 +30,16 @@
         </div>
     </div>
 </template>
+
 <script>
+import Vue from 'vue'
+import { Toast } from 'vant'
+
 // 引入创建好的CinemaItem子组件
 import cinemaItem from './Cinema/CinemaItem'
 // mapState是vuex提供的一种切割函数，可以把你自己想要的状态直接拿出来，不用点点点
-import { mapState } from 'vuex' // 第一步引入
+import { mapState } from 'vuex'
+Vue.use(Toast) // 第一步引入
 export default {
   data () {
     return {
@@ -47,14 +52,30 @@ export default {
   components: {
     cinemaItem
   },
+  beforeMount () {
+    Toast.loading({
+      message: '加载中...',
+      forbidClick: true,
+      overlay: true, // 是否显示背景遮罩层
+      duration: 0 // 不会消失
+    })
+    // setTimeout(()=>{
+    //    // 手动清除 Toast
+    //   Toast.clear()
+    // },2000)
+  },
   mounted () {
     // 异步vuex
     // dispatch提交vuex中action，第一步
     if (this.cinemaList.length === 0) {
       // 只有有$store，都要开启命名空间使用
-      this.$store.dispatch('cinema/getCinemaAction')
+      this.$store.dispatch('cinema/getCinemaAction').then(res => {
+        console.log('异步结束，已经存到vuex中')
+        Toast.clear()
+      })
     } else {
       console.log('cinema', '使用缓存')
+      Toast.clear()
     }
   },
   methods: {

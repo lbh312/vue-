@@ -1,9 +1,11 @@
 <template>
     <div>
         center
+
     </div>
 </template>
 <script>
+
 export default {
   // 配置局部路由守卫（拦截）
   // beforeRouteEnter/beforeRouteUpdate/beforeRouteLeave是路由的钩子函数
