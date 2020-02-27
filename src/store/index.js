@@ -9,7 +9,7 @@ Vue.use(Vuex) // 注册Vuex插件，到时候用的时候引用
 // 订单，详情，不适合用vuex来缓存数据
 /*
 1、解决非父子通信问题
-2、缓存后端数据，提高体验
+2、缓存后端数据，提高用户体验
 */
 const store = new Vuex.Store({
   state: {
@@ -50,6 +50,14 @@ const store = new Vuex.Store({
         store.commit('setCinemaList', res.data.data.cinemas) // commit支持传参,将请求的数据传进来
       // this.datalist = res.data.data.cinemas
       })
+    }
+  },
+
+  // 对vuex的“全局状态”进行数据处理，类似于vue中的计算属性，主要起到复用效果
+  getters: {
+    topDatalist (state) {
+      // state形参，vuex自动调用时候，来传值
+      return state.cinemaList.slice(0, 5) // 截取前5个数据
     }
   }
 })

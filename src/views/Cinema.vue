@@ -23,16 +23,18 @@
 
         <div class="content">
             <ul>
-                <li v-for="data in computedDatalist" :key="data.cinemaId">
-                    <h4>{{data.name}}</h4>
-                    <p>{{data.address}}</p>
-                </li>
+                <!-- 遍历CinemaItem组件 -->
+                <cinema-item v-for="data in computedDatalist" :key="data.cinemaId"
+                :data="data"></cinema-item>
             </ul>
         </div>
     </div>
 </template>
 <script>
-
+// 引入创建好的CinemaItem子组件
+import cinemaItem from './Cinema/CinemaItem'
+// mapState是vuex提供的一种切割函数，可以把你自己想要的状态直接拿出来，不用点点点
+import { mapState } from 'vuex' // 第一步引入
 export default {
   data () {
     return {
@@ -41,13 +43,17 @@ export default {
       current: '全城' // 记录选择哪个区
     }
   },
+  // 注册组件
+  components: {
+    cinemaItem
+  },
   mounted () {
     // 异步vuex
     // dispatch提交vuex中action，第一步
-    if (this.$store.state.cinemaList.length === 0) {
+    if (this.cinemaList.length === 0) {
       this.$store.dispatch('getCinemaAction')
     } else {
-      console.log('使用缓存')
+      console.log('cinema', '使用缓存')
     }
   },
   methods: {
@@ -61,10 +67,15 @@ export default {
     }
   },
   computed: {
+    // 第二步，再也不需要点点点，必须放在计算属性中
+    // 只要出现$store.state就不要
+    // this.$store.state.cinemaList == this.cinemaList
+    ...mapState(['cinemaList']),
+
     // 所有区的计算属性
     arealist () {
       /* 把对象映射成里面的某个数据属性,用map方法 */
-      var newarr = this.$store.state.cinemaList.map(item => item.districtName)
+      var newarr = this.cinemaList.map(item => item.districtName)
       //  console.log(newarr)
 
       /* 利用set结构进行数组去重，Array.from把类数组架构转换成数据结构
@@ -78,10 +89,10 @@ export default {
     // 根据选择的不同区域，过滤出相应区域的影院
     computedDatalist () {
       // 解决“全城”刚开始不显示
-      if (this.current === '全城') { return this.$store.state.cinemaList }
+      if (this.current === '全城') { return this.cinemaList }
 
       // 把整个原始数组过滤出来数据之后，必须保证是某个特定的区
-      return this.$store.state.cinemaList.filter(item => item.districtName === this.current)
+      return this.cinemaList.filter(item => item.districtName === this.current)
     }
   }
 }
