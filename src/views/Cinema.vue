@@ -51,7 +51,8 @@ export default {
     // 异步vuex
     // dispatch提交vuex中action，第一步
     if (this.cinemaList.length === 0) {
-      this.$store.dispatch('getCinemaAction')
+      // 只有有$store，都要开启命名空间使用
+      this.$store.dispatch('cinema/getCinemaAction')
     } else {
       console.log('cinema', '使用缓存')
     }
@@ -70,7 +71,7 @@ export default {
     // 第二步，再也不需要点点点，必须放在计算属性中
     // 只要出现$store.state就不要
     // this.$store.state.cinemaList == this.cinemaList
-    ...mapState(['cinemaList']),
+    ...mapState('cinema', ['cinemaList']),
 
     // 所有区的计算属性
     arealist () {

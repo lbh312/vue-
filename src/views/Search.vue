@@ -50,11 +50,13 @@ export default {
     // this.$store.state.isTabbarShow = false
 
     // 同步状态，利用commit方法提交到mutations中
-    this.$store.commit('hide')
+    // 只有有$store，都要开启命名空间使用
+    this.$store.commit('tabbar/hide')
 
     // 异步请求
     if (this.cinemaList.length === 0) {
-      this.$store.dispatch('getCinemaAction')
+      // 只有有$store，都要开启命名空间使用
+      this.$store.dispatch('cinema/getCinemaAction')
     } else {
       console.log('search', '使用缓存')
     }
@@ -65,8 +67,8 @@ export default {
     // 第二步，再也不需要点点点，必须放在计算属性中
     // 只要出现$store.state就不要
     // this.$store.state.cinemaList == this.cinemaList
-    ...mapState(['cinemaList']),
-    ...mapGetters(['topDataList']),
+    ...mapState('cinema', ['cinemaList']),
+    ...mapGetters('cinema', ['topDataList']),
 
     topDataList () {
       return this.cinemaList.slice(0, 5) // 截取前5个数据
@@ -85,8 +87,8 @@ export default {
     // 离开出现
     // console.log(destroyed)
     // this.$store.state.isTabbarShow = true
-
-    this.$store.commit('show')
+    // 只有有$store，都要开启命名空间使用
+    this.$store.commit('tabber/show')
   }
 }
 </script>
