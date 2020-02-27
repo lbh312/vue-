@@ -1,9 +1,9 @@
 module.exports = {
   devServer: {
-    // overlay: {
-    //   warnings: false,
-    //   errors: false
-    // },
+    overlay: {
+      warnings: false,
+      errors: false
+    },
     proxy: {
       '/kerwin': {
         target: 'http://m.maoyan.com',
@@ -19,6 +19,6 @@ module.exports = {
         */
       }
     }
-  }
-  // lintOnSave: true // 关了eslint检查
+  },
+  lintOnSave: true // 关了eslint检查
 }

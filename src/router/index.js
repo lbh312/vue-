@@ -8,6 +8,7 @@ import Login from '@/views/Login'
 import ErrorComponent from '@/views/ErrorComponent'
 import Nowplaying from '@/views/film/Nowplaying'
 import Comingsoon from '@/views/film/Comingsoon'
+import Search from '@/views/Search'
 
 Vue.use(VueRouter) // 创建路由插件，必加，不动他
 
@@ -39,6 +40,11 @@ const routes = [
     // 路由懒加载
     component: () => import(/* webpackChunkName: 'kerwincinema' */'@/views/Cinema') // webpack会进行分割，用什么加载什么
   },
+  {
+    path: '/cinema/search',
+    component: Search
+  },
+
   {
     path: '/center',
     component: Center
