@@ -8,25 +8,12 @@
         <p class="actor">主演：{{data.actors | actorFilter}}</p>
       </li>
     </ul>
-    <ul>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-    </ul>
   </div>
 </template>
 
 <script>
 import http from '@/util/http'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -34,9 +21,12 @@ export default {
       datalist: []
     }
   },
+  computed: {
+    ...mapState('city', ['cityId'])
+  },
   mounted () {
     http.request({
-      url: '/gateway?cityId=310100&pageNum=1&pageSize=10&type=1&k=8317728',
+      url: `/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=1&k=8317728`,
       headers: {
         'X-Host': 'mall.film-ticket.film.list'
       }

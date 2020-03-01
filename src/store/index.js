@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import cinema from './module/cinemaModule' // 引入子store
 import tabbar from './module/tabbarshowModule' // 引入子store
+import city from './module/cityModule'
+import createPersistedState from 'vuex-persistedstate' // 引入插件，可以存数据，存localStorage里
 
 Vue.use(Vuex) // 注册Vuex插件，到时候用的时候引用
 
@@ -18,6 +20,14 @@ Vue.use(Vuex) // 注册Vuex插件，到时候用的时候引用
 模块写法
 */
 const store = new Vuex.Store({
+  plugins: [createPersistedState({
+    // reducer为固定写法
+    reducer (data) {
+      return {
+        city: data.city
+      }
+    }
+  })], // 让持久化插件生效
   state: {
 
   }, // 存放“全局”状态，用this.$store就能访问到
@@ -37,7 +47,8 @@ const store = new Vuex.Store({
   // 将两个store合并成一个大的
   modules: {
     cinema,
-    tabbar
+    tabbar,
+    city
   }
 })
 

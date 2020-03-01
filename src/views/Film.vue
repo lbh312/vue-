@@ -18,6 +18,7 @@
 <script>
 import http from '@/util/http'
 import swiper from '@/components/Swiper'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -27,22 +28,30 @@ export default {
   components: {
     swiper // 局部注册swiper组件
   },
+  computed: {
+    ...mapState('city', ['cityId'])
+  },
   mounted () {
     // 封装axios在http.js中，然后引入到film页面中
     http.request({
-      url: '/gateway?type=2&cityId=310100&k=3529285',
+      url: `/gateway?type=2&cityId=${this.cityId}&k=3529285`,
       headers: {
         'X-Host': 'mall.cfg.common-banner'
       }
     }).then(res => {
       console.log(res.data)
       // 创建一个对象，引入到请求的数据中去
-      var obj = {
-        bannerId: 222222222,
-        imgUrl: 'https://pic.maizuo.com/usr/movie/f046c5d6b2c397a8194ab14dc439d7dd.jpg?x-oss-process=image/quality,Q_70'
+      // var obj = {
+      //   bannerId: 222222222,
+      //   imgUrl: 'https://pic.maizuo.com/usr/movie/f046c5d6b2c397a8194ab14dc439d7dd.jpg?x-oss-process=image/quality,Q_70'
+      // }
+      // this.looplist = [...res.data.data, obj] // es6语法，合并两个对象
+      // console.log(this.looplist)
+
+      // 保证有值的话，会赋值，没值的话，将不会
+      if (res.data.data) {
+        this.looplist = res.data.data
       }
-      this.looplist = [...res.data.data, obj] // es6语法，合并两个对象
-      console.log(this.looplist)
     })
   }
 }

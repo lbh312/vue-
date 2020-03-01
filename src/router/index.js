@@ -9,6 +9,7 @@ import ErrorComponent from '@/views/ErrorComponent'
 import Nowplaying from '@/views/film/Nowplaying'
 import Comingsoon from '@/views/film/Comingsoon'
 import Search from '@/views/Search'
+import City from '@/views/City'
 
 Vue.use(VueRouter) // 创建路由插件，必加，不动他
 
@@ -48,6 +49,10 @@ const routes = [
   {
     path: '/center',
     component: Center
+  },
+  {
+    path: '/city',
+    component: City
   },
   {
     path: '/login',

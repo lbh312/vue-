@@ -5,11 +5,11 @@ const module = {
   state: {
     cinemaList: []
   },
-  // 异步处理vuex，第二部
+  // 异步处理vuex，第二步
   actions: {
-    getCinemaAction (store) {
+    getCinemaAction (store, id) {
       http.request({
-        url: '/gateway?cityId=310100&ticketFlag=1&k=1358720',
+        url: `/gateway?cityId=${id}&ticketFlag=1&k=1358720`,
         headers: {
           'X-Host': 'mall.film-ticket.cinema.list'
         }

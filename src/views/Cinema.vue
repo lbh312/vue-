@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="title">
-            <div class="left">上海</div>
+            <div class="left" @click="handleChangePage('/city')">{{cityName}}</div>
              <div>影院</div>
-              <div class="right"><i class="iconfont icon-search" @click="handleChangePage"></i></div>
+              <div class="right"><i class="iconfont icon-search" @click="handleChangePage('/cinema/search')"></i></div>
         </div>
 
         <div class="select">
@@ -38,7 +38,7 @@ import { Toast } from 'vant'
 // 引入创建好的CinemaItem子组件
 import cinemaItem from './Cinema/CinemaItem'
 // mapState是vuex提供的一种切割函数，可以把你自己想要的状态直接拿出来，不用点点点
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 Vue.use(Toast) // 第一步引入
 export default {
   data () {
@@ -69,7 +69,7 @@ export default {
     // dispatch提交vuex中action，第一步
     if (this.cinemaList.length === 0) {
       // 只有有$store，都要开启命名空间使用
-      this.$store.dispatch('cinema/getCinemaAction').then(res => {
+      this.$store.dispatch('cinema/getCinemaAction', this.cityId).then(res => {
         console.log('异步结束，已经存到vuex中')
         Toast.clear()
       })
@@ -84,15 +84,21 @@ export default {
       this.current = data
       this.isAreaShow = false
     },
-    handleChangePage () {
-      this.$router.push('/cinema/search') // 点击搜索跳转路径
-    }
+    handleChangePage (path) {
+      if (path === '/city') {
+        // 清空共享状态Vuex cinemaList
+        this.setCinemaList([])
+      }
+      this.$router.push(path) // 点击搜索跳转路径
+    },
+    ...mapMutations('cinema', ['setCinemaList'])
   },
   computed: {
     // 第二步，再也不需要点点点，必须放在计算属性中
     // 只要出现$store.state就不要
     // this.$store.state.cinemaList == this.cinemaList
     ...mapState('cinema', ['cinemaList']),
+    ...mapState('city', ['cityName', 'cityId']),
 
     // 所有区的计算属性
     arealist () {
